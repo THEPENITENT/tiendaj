@@ -6,7 +6,7 @@
 # ============================================
 
 # --- Configuración ---
-REPO_URL="https://github.com/THEPENITENT/TIENDAJ-App.git"
+REPO_URL="https://github.com/THEPENITENT/tiendaj.git"
 APP_DIR="$HOME/TIENDAJ-App"
 BACKUP_DIR="$HOME/backups-tiendaj"
 
