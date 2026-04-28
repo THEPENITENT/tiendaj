@@ -3,8 +3,8 @@ import os
 
 DB_CONFIG = {
     'host': os.environ.get('DB_HOST', 'localhost'),
-    'user': os.environ.get('DB_USER', 'root'),
-    'password': os.environ.get('DB_PASSWORD', ''),
+    'user': os.environ.get('DB_USER', 'angel_tienda'), # <--- Cambiar root por tu nuevo usuario
+    'password': os.environ.get('DB_PASSWORD', 'tu_password_seguro'), # <--- Poner la contraseña que elegiste
     'database': 'tiendaj',
     'charset': 'utf8mb4',
     'cursorclass': pymysql.cursors.DictCursor
