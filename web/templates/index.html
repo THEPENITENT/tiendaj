@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+
+<div class="stats">
+    <div class="stat-card">
+        <div class="label">Videojuegos</div>
+        <div class="value">{{ total_juegos }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Clientes</div>
+        <div class="value">{{ total_clientes }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Ventas</div>
+        <div class="value">{{ total_ventas }}</div>
+    </div>
+    <div class="stat-card">
+        <div class="label">Ingresos Totales</div>
+        <div class="value">${{ "{:,.2f}".format(ingresos) }}</div>
+    </div>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2>Últimas Ventas</h2>
+        <a href="/ventas" class="btn btn-primary btn-sm">Ver todas</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Método</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in ultimas_ventas %}
+            <tr>
+                <td>#{{ v.id }}</td>
+                <td>{{ v.nombre }} {{ v.apellido_paterno }}</td>
+                <td class="price">${{ "{:,.2f}".format(v.total) }}</td>
+                <td><span class="badge badge-cyan">{{ v.metodo_pago }}</span></td>
+                <td>{{ v.fecha_venta.strftime('%d/%m/%Y %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

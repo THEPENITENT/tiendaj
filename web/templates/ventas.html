@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% block title %}Ventas{% endblock %}
+
+{% block content %}
+<h1>Ventas</h1>
+
+<div class="form-card">
+    <h2>Registrar Venta</h2>
+    <form action="/ventas/agregar" method="POST">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Cliente</label>
+                <select name="cliente_id" required>
+                    <option value="">Seleccionar cliente...</option>
+                    {% for c in clientes %}
+                    <option value="{{ c.id }}">{{ c.nombre }} {{ c.apellido_paterno }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Videojuego</label>
+                <select name="videojuego_id" required>
+                    <option value="">Seleccionar juego...</option>
+                    {% for j in juegos %}
+                    <option value="{{ j.id }}">{{ j.titulo }} — ${{ "{:,.2f}".format(j.precio) }} (Stock: {{ j.stock }})</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Cantidad</label>
+                <input type="number" name="cantidad" min="1" required value="1">
+            </div>
+            <div class="form-group">
+                <label>Método de Pago</label>
+                <select name="metodo_pago" required>
+                    <option value="Efectivo">Efectivo</option>
+                    <option value="Tarjeta">Tarjeta</option>
+                    <option value="Transferencia">Transferencia</option>
+                </select>
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Registrar Venta</button>
+    </form>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2>Historial de Ventas ({{ ventas|length }})</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Cliente</th>
+                <th>Total</th>
+                <th>Método</th>
+                <th>Fecha</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for v in ventas %}
+            <tr>
+                <td>#{{ v.id }}</td>
+                <td>{{ v.nombre }} {{ v.apellido_paterno }}</td>
+                <td class="price">${{ "{:,.2f}".format(v.total) }}</td>
+                <td>
+                    {% if v.metodo_pago == 'Efectivo' %}
+                        <span class="badge badge-green">{{ v.metodo_pago }}</span>
+                    {% elif v.metodo_pago == 'Tarjeta' %}
+                        <span class="badge badge-cyan">{{ v.metodo_pago }}</span>
+                    {% else %}
+                        <span class="badge badge-amber">{{ v.metodo_pago }}</span>
+                    {% endif %}
+                </td>
+                <td>{{ v.fecha_venta.strftime('%d/%m/%Y %H:%M') }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

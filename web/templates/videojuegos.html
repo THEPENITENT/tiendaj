@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block title %}Videojuegos{% endblock %}
+
+{% block content %}
+<h1>Videojuegos</h1>
+
+<div class="form-card">
+    <h2>Agregar Videojuego</h2>
+    <form action="/videojuegos/agregar" method="POST">
+        <div class="form-grid">
+            <div class="form-group">
+                <label>Título</label>
+                <input type="text" name="titulo" required placeholder="Nombre del juego">
+            </div>
+            <div class="form-group">
+                <label>Precio</label>
+                <input type="number" name="precio" step="0.01" min="1" required placeholder="0.00">
+            </div>
+            <div class="form-group">
+                <label>Clasificación</label>
+                <select name="clasificacion_id" required>
+                    <option value="">Seleccionar...</option>
+                    {% for c in clasificaciones %}
+                    <option value="{{ c.id }}">{{ c.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Plataforma</label>
+                <select name="plataforma_id" required>
+                    <option value="">Seleccionar...</option>
+                    {% for p in plataformas %}
+                    <option value="{{ p.id }}">{{ p.nombre }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Fecha Lanzamiento</label>
+                <input type="date" name="fecha_lanzamiento">
+            </div>
+            <div class="form-group">
+                <label>Stock</label>
+                <input type="number" name="stock" min="0" required value="0">
+            </div>
+        </div>
+        <br>
+        <button type="submit" class="btn btn-primary">Agregar</button>
+    </form>
+</div>
+
+<div class="table-container">
+    <div class="table-header">
+        <h2>Catálogo ({{ juegos|length }})</h2>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Título</th>
+                <th>Precio</th>
+                <th>Clasificación</th>
+                <th>Plataforma</th>
+                <th>Stock</th>
+                <th>Acciones</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for j in juegos %}
+            <tr>
+                <td><strong>{{ j.titulo }}</strong></td>
+                <td class="price">${{ "{:,.2f}".format(j.precio) }}</td>
+                <td><span class="badge badge-amber">{{ j.clasificacion }}</span></td>
+                <td><span class="badge badge-cyan">{{ j.plataforma }}</span></td>
+                <td>
+                    {% if j.stock > 10 %}
+                        <span class="badge badge-green">{{ j.stock }}</span>
+                    {% elif j.stock > 0 %}
+                        <span class="badge badge-amber">{{ j.stock }}</span>
+                    {% else %}
+                        <span class="badge badge-red">Agotado</span>
+                    {% endif %}
+                </td>
+                <td>
+                    <a href="/videojuegos/eliminar/{{ j.id }}" class="btn btn-danger btn-sm"
+                       onclick="return confirm('¿Eliminar {{ j.titulo }}?')">Eliminar</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}
